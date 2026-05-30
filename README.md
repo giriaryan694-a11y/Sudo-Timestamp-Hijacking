@@ -1,6 +1,6 @@
 # 🔐 Sudo Timestamp Hijacking
 
-> **Invisible privilege escalation monitor** — Zero UI | Async alarm | Forensic-clean
+> **Invisible privilege escalation monitor** 
 
 **Made By Aryan Giri | giriaryan694-a11y**
 
