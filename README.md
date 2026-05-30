@@ -8,7 +8,7 @@
 
 ## 📹 Demo
 
-<video src="https://giriaryan694-a11y.github.io/Sudo-Timestamp-Hijacking/demo/demo1.mp4" controls width="100%"></video>
+[Watch demo](https://giriaryan694-a11y.github.io/Sudo-Timestamp-Hijacking/demo/demo1.mp4)
 
 ---
 
