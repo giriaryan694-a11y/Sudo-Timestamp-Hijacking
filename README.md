@@ -1,6 +1,6 @@
 # 🔐 Sudo Timestamp Hijacking
 
-> **Invisible privilege escalation monitor** 
+> **Privilege Escalation via Sudo Authentication Cache Abuse** 
 
 **Made By Aryan Giri | giriaryan694-a11y**
 
