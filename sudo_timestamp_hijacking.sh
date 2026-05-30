@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🔐 sudo_guardian_silent.sh - Sudo Timestamp Hijacking
+# 🔐 sudo_timestamp_hijacking.sh - Sudo Timestamp Hijacking
 # Made By Aryan Giri | giriaryan694-a11y
 
 set -euo pipefail
